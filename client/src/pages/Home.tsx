@@ -1,283 +1,199 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { insertContactMessageSchema, type InsertContactMessage } from "@shared/schema";
-import { useContactForm } from "@/hooks/use-contact";
-import { Shield, HeartHandshake, Users, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Shield, HeartHandshake, Users, ArrowRight, Leaf, CheckCircle } from "lucide-react";
+import { Link } from "wouter";
 
 export default function Home() {
-  const contactMutation = useContactForm();
-
-  const form = useForm<InsertContactMessage>({
-    resolver: zodResolver(insertContactMessageSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
-  });
-
-  const onSubmit = (data: InsertContactMessage) => {
-    contactMutation.mutate(data, {
-      onSuccess: () => form.reset(),
-    });
-  };
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
-  };
-
   return (
     <div className="min-h-screen bg-background font-body text-foreground">
       <Navbar />
       
       {/* HERO SECTION */}
       <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* Background Decorative Element */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl -z-10" />
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl -z-10" />
 
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div>
               <div className="inline-flex items-center px-3 py-1 rounded-full bg-secondary/20 text-green-800 text-sm font-medium mb-6">
-                <span className="w-2 h-2 rounded-full bg-green-600 mr-2"></span>
-                San Antonio, TX
+                <Leaf className="w-4 h-4 mr-2" />
+                Psychedelic-Assisted Healing
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6 text-balance text-primary">
-                Healing Retreats & Support for Veterans
+                Empowering Veterans Through Healing
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
-                We provide community, integration, and care to help restore purpose and hope to those who have served but fall through the cracks of traditional assistance.
+                We provide veterans with access to transformative psychedelic-assisted therapy and build community for those seeking alternative paths to peace.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
                 <a 
                   href="https://www.paypal.com/us/fundraiser/charity/5511140" 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
-                  <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+                  <Button size="lg" className="w-full sm:w-auto" data-testid="button-donate-hero">
                     Make a Donation
                   </Button>
                 </a>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="w-full sm:w-auto text-lg h-14 px-8 border-primary text-primary hover:bg-primary/5"
-                  onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Learn More
-                </Button>
+                <Link href="/our-approach">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full sm:w-auto"
+                    data-testid="button-learn-more"
+                  >
+                    Learn More
+                  </Button>
+                </Link>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              className="relative"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+            <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
-                {/* Descriptive comment for Unsplash image replacement */}
-                {/* peaceful nature landscape mountain sunrise calm */}
                 <img 
                   src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop" 
                   alt="Peaceful mountain landscape representing healing" 
                   className="w-full h-full object-cover"
+                  data-testid="img-hero"
                 />
                 <div className="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
               </div>
-              {/* Floating Badge */}
               <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs hidden md:block">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center text-secondary-foreground">
-                    <HeartHandshake className="w-5 h-5 text-green-700" />
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-green-700" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-primary">Community First</p>
-                    <p className="text-xs text-muted-foreground">Reconnecting those who served.</p>
+                    <p className="text-sm font-bold text-primary" data-testid="text-donation-model">100% Goes to Veterans</p>
+                    <p className="text-xs text-muted-foreground">Every dollar funds healing.</p>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* MISSION / ABOUT SECTION */}
+      {/* 100% DONATION MODEL */}
+      <section className="py-20 bg-primary text-primary-foreground">
+        <div className="max-w-4xl mx-auto container-padding text-center">
+          <h2 className="text-3xl md:text-5xl font-display font-bold mb-6">100% Donation Model</h2>
+          <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
+            Every dollar you donate goes directly to providing care, resources, and connection for veterans and their families. No administrative fees. Complete transparency.
+          </p>
+          <Link href="/our-approach">
+            <Button size="lg" variant="secondary" data-testid="button-see-approach">
+              See Our Approach <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* WHAT WE DO */}
       <section id="about" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto container-padding">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">Our Mission</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">What We Do</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Operation Solace Foundation provides healing retreats and support programs for veterans who face mental health challenges but don’t qualify for traditional assistance.
+              We provide access to psychedelic-assisted therapy, build awareness, and create community for veterans seeking alternative healing.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <motion.div 
-              className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300"
-              {...fadeInUp}
-            >
+            <div className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300" data-testid="card-therapy">
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-700 mb-6">
+                <Leaf className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 font-display">Therapy Access</h3>
+              <p className="text-muted-foreground">
+                Connecting veterans with safe, clinically-guided psychedelic therapy programs including psilocybin and ayahuasca retreats.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300" data-testid="card-awareness">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6">
                 <Shield className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold mb-3 font-display">Safety & Support</h3>
+              <h3 className="text-xl font-bold mb-3 font-display">Awareness</h3>
               <p className="text-muted-foreground">
-                Providing a safe haven for veterans to address mental health challenges without judgment or bureaucracy.
+                Educating the public about psychedelic healing benefits and removing the stigma around alternative treatments for PTSD.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-700 mb-6">
-                <HeartHandshake className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 font-display">Healing Retreats</h3>
-              <p className="text-muted-foreground">
-                Immersive experiences designed to break the cycle of isolation and restore a sense of inner peace.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            <div className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300" data-testid="card-community">
               <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-700 mb-6">
                 <Users className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold mb-3 font-display">Community Integration</h3>
+              <h3 className="text-xl font-bold mb-3 font-display">Community</h3>
               <p className="text-muted-foreground">
-                Rebuilding the brotherhood and connection that many veterans lose after leaving the service.
+                Building a tribe of like-minded individuals who have experienced plant medicine healing and support each other's growth.
               </p>
-            </motion.div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/programs">
+              <Button variant="outline" size="lg" data-testid="button-explore-programs">
+                Explore Our Programs <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* PEACE IS POSSIBLE */}
+      <section className="py-24 bg-background">
+        <div className="max-w-7xl mx-auto container-padding">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2074&auto=format&fit=crop" 
+                  alt="Veterans community support" 
+                  className="w-full h-[400px] object-cover"
+                  data-testid="img-community"
+                />
+              </div>
+            </div>
+            <div>
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
+                Peace Is Possible
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                The invisible wounds of war — PTSD, depression, moral injury — don't always respond to traditional treatments. But there is hope.
+              </p>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Psychedelic-assisted therapy has shown breakthrough results for veterans suffering from treatment-resistant mental health conditions. We're here to help you access these life-changing treatments.
+              </p>
+              <Link href="/our-story">
+                <Button size="lg" data-testid="button-read-story">
+                  Read Our Story <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA SECTION */}
       <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pattern-dots"></div>
         <div className="max-w-4xl mx-auto container-padding text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-display font-bold mb-6">Your Support Changes Lives</h2>
+          <HeartHandshake className="w-16 h-16 mx-auto mb-6 opacity-80" />
+          <h2 className="text-3xl md:text-5xl font-display font-bold mb-6">Support a Veteran Today</h2>
           <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
-            100% of your donation goes directly to funding retreats and support programs for veterans in need.
+            Your donation provides direct access to healing retreats and support programs for veterans who sacrificed for our freedom.
           </p>
           <a 
             href="https://www.paypal.com/us/fundraiser/charity/5511140" 
             target="_blank" 
             rel="noopener noreferrer"
           >
-            <Button size="lg" variant="secondary" className="text-primary font-bold text-lg h-14 px-10 shadow-lg hover:bg-white transition-colors">
+            <Button size="lg" variant="secondary" data-testid="button-donate-cta">
               Donate Now via PayPal <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </a>
-        </div>
-      </section>
-
-      {/* CONTACT SECTION */}
-      <section id="contact" className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto container-padding">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">Get in Touch</h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Have questions about our programs, or want to know how you can help? Send us a message and we'll get back to you soon.
-              </p>
-              
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-1">
-                    <span className="font-bold">📍</span>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-foreground">Location</h4>
-                    <p className="text-muted-foreground">San Antonio, TX</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-1">
-                    <span className="font-bold">✉️</span>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-foreground">Email</h4>
-                    <p className="text-muted-foreground">info@operationsolace.org</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-lg border border-border">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your name" className="h-12 bg-gray-50 border-gray-200" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="your@email.com" className="h-12 bg-gray-50 border-gray-200" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Message</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="How can we help?" className="min-h-[120px] bg-gray-50 border-gray-200" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button 
-                    type="submit" 
-                    className="w-full h-12 text-lg font-semibold"
-                    disabled={contactMutation.isPending}
-                  >
-                    {contactMutation.isPending ? "Sending..." : "Send Message"}
-                  </Button>
-                </form>
-              </Form>
-            </div>
-          </div>
         </div>
       </section>
 
