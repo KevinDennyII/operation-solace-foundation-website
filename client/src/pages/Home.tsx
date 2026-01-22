@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Shield, HeartHandshake, Users, ArrowRight, Leaf, CheckCircle } from "lucide-react";
 import { Link } from "wouter";
+import logoImage from "@assets/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg";
 
 export default function Home() {
   return (
@@ -50,17 +51,16 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+            <div className="relative flex justify-center">
+              <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Peaceful mountain landscape representing healing" 
-                  className="w-full h-full object-cover"
+                  src={logoImage} 
+                  alt="Operation Solace - Soldier walking through mushroom field" 
+                  className="w-80 h-80 md:w-96 md:h-96 rounded-full object-cover shadow-2xl border-4 border-white"
                   data-testid="img-hero"
                 />
-                <div className="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs hidden md:block">
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                     <CheckCircle className="w-5 h-5 text-green-700" />

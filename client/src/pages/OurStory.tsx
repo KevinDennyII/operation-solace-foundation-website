@@ -1,7 +1,9 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Heart, Star, ArrowRight, Quote } from "lucide-react";
+import { Heart, Star, ArrowRight, Quote, Calendar } from "lucide-react";
+import eventPhoto from "@assets/8e38bf695a18c8490a2e3cb64268d6c6af063942-1_1769068811823.jpeg";
+import skullLogo from "@assets/4c0ee530559d5b38f9067c618b160608a1c9dfad-2_1769068811822.jpeg";
 
 export default function OurStory() {
   return (
@@ -39,15 +41,13 @@ export default function OurStory() {
                 That experience changed everything. It restored hope, purpose, and connection. And it sparked a mission: to ensure every veteran has access to these life-changing treatments.
               </p>
             </div>
-            <div className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                <img 
-                  src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Sunset representing hope and new beginnings" 
-                  className="w-full h-[400px] object-cover"
-                  data-testid="img-sunset"
-                />
-              </div>
+            <div className="relative flex justify-center">
+              <img 
+                src={skullLogo} 
+                alt="Operation Solace psychedelic skull logo" 
+                className="w-72 h-72 md:w-80 md:h-80 rounded-full object-cover shadow-2xl"
+                data-testid="img-skull-logo"
+              />
             </div>
           </div>
         </div>
@@ -95,6 +95,39 @@ export default function OurStory() {
               <h3 className="text-xl font-bold mb-4 font-display text-primary">Community Is Medicine</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Brotherhood and connection are essential to healing. We rebuild the bonds that many veterans lose when they leave the service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Community Events Section */}
+      <section className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto container-padding">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                <img 
+                  src={eventPhoto} 
+                  alt="Operation Solace community event booth" 
+                  className="w-full h-[400px] object-cover"
+                  data-testid="img-event"
+                />
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-secondary/20 text-green-800 text-sm font-semibold mb-6">
+                <Calendar className="w-4 h-4 mr-2" />
+                Community Outreach
+              </div>
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
+                Spreading the Message
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                We actively participate in community events to raise awareness about psychedelic therapy for veterans. Our booth honors fallen heroes while educating the public about alternative healing paths.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                From Day of the Dead celebrations to veteran appreciation events, we meet our community where they are and share the hope of healing.
               </p>
             </div>
           </div>

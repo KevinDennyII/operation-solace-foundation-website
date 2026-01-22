@@ -57,6 +57,16 @@ This pattern ensures type safety across the full stack and eliminates duplicatio
 
 ### Payment/Donations
 - External PayPal fundraiser links (no direct integration, just outbound links)
+- PayPal Fundraiser URL: https://www.paypal.com/us/fundraiser/charity/5511140
+
+### Social Media
+- Instagram: https://www.instagram.com/operation_solace/
+
+### Brand Assets
+The following branded images are used throughout the site (located in `attached_assets/`):
+- **Main Logo**: Soldier walking through mushroom field (d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg) - Used in navbar, footer, and hero
+- **Skull Logo**: Psychedelic skull with helmet (4c0ee530559d5b38f9067c618b160608a1c9dfad-2_1769068811822.jpeg) - Used on Our Story page
+- **Event Photo**: Community outreach booth (8e38bf695a18c8490a2e3cb64268d6c6af063942-1_1769068811823.jpeg) - Used on Our Story page
 
 ### Third-Party UI Libraries
 - **Radix UI**: Accessible component primitives (dialogs, dropdowns, forms, etc.)

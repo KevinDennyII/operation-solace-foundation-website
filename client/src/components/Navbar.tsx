@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import logoImage from "@assets/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -19,9 +20,11 @@ export function Navbar() {
     <nav className="fixed w-full z-50 top-0 start-0 glass-panel border-b border-border/40">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 p-4 container-padding">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer" data-testid="link-logo">
-          <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-display font-bold text-xl">
-            OS
-          </div>
+          <img 
+            src={logoImage} 
+            alt="Operation Solace Logo" 
+            className="h-12 w-12 rounded-full object-cover"
+          />
           <span className="self-center text-xl font-bold whitespace-nowrap text-primary font-display">
             Operation Solace
           </span>
