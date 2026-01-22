@@ -1,5 +1,7 @@
 import { Link } from "wouter";
 import { Heart } from "lucide-react";
+import { SiInstagram } from "react-icons/si";
+import logoImage from "@assets/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg";
 
 export function Footer() {
   return (
@@ -7,7 +9,12 @@ export function Footer() {
       <div className="max-w-7xl mx-auto container-padding">
         <div className="md:flex md:justify-between gap-8">
           <div className="mb-8 md:mb-0">
-            <Link href="/" className="flex items-center" data-testid="link-footer-logo">
+            <Link href="/" className="flex items-center gap-3" data-testid="link-footer-logo">
+              <img 
+                src={logoImage} 
+                alt="Operation Solace Logo" 
+                className="h-14 w-14 rounded-full object-cover"
+              />
               <span className="self-center text-2xl font-bold whitespace-nowrap font-display text-white">
                 Operation Solace
               </span>
@@ -18,6 +25,18 @@ export function Footer() {
             <p className="mt-2 text-primary-foreground/60 text-sm" data-testid="text-ein">
               EIN: 33-3302627
             </p>
+            <div className="mt-4">
+              <a 
+                href="https://www.instagram.com/operation_solace/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-primary-foreground/70 hover:text-white transition-colors"
+                data-testid="link-instagram"
+              >
+                <SiInstagram className="w-5 h-5" />
+                <span>Follow us on Instagram</span>
+              </a>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-12 sm:grid-cols-3">
             <div>
