@@ -12,7 +12,7 @@ export function Logo({ className, alt = "Operation Solace Logo" }: LogoProps) {
     <img
       src={logoImage}
       alt={alt}
-      className={clsx("rounded-full object-cover", className)}
+      className={clsx("object-contain", className)}
     />
   );
 }

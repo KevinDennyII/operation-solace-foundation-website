@@ -58,7 +58,7 @@ export default function Home() {
                   className="w-80 h-80 md:w-96 md:h-96 border-4 border-white shadow-2xl"
                 />
               </div>
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs">
+              <div className="absolute -bottom-10 right-0 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                     <CheckCircle className="w-5 h-5 text-green-700" />
