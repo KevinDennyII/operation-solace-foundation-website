@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import OurApproach from "@/pages/OurApproach";
 import Programs from "@/pages/Programs";
+import Events from "@/pages/Events";
 import OurStory from "@/pages/OurStory";
 import Contact from "@/pages/Contact";
 import Resources from "@/pages/Resources";
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/our-approach" component={OurApproach} />
       <Route path="/programs" component={Programs} />
+      <Route path="/events" component={Events} />
       <Route path="/resources" component={Resources} />
       <Route path="/our-story" component={OurStory} />
       <Route path="/contact" component={Contact} />
