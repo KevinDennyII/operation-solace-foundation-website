@@ -2,15 +2,17 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Heart, Star, ArrowRight, Quote, Calendar } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import eventPhoto from "@assets/8e38bf695a18c8490a2e3cb64268d6c6af063942-1_1769068811823.jpeg";
-import skullLogo from "@assets/4c0ee530559d5b38f9067c618b160608a1c9dfad-2_1769068811822.jpeg";
 
 export default function OurStory() {
   return (
     <div className="min-h-screen bg-background font-body text-foreground">
       <Navbar />
       
-      <section className="pt-32 pb-20 lg:pt-40 lg:pb-28">
+      <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl -z-10" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl -z-10" />
         <div className="max-w-7xl mx-auto container-padding">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 text-primary text-balance" data-testid="text-page-title">
@@ -42,11 +44,8 @@ export default function OurStory() {
               </p>
             </div>
             <div className="relative flex justify-center">
-              <img 
-                src={skullLogo} 
-                alt="Operation Solace psychedelic skull logo" 
-                className="w-72 h-72 md:w-80 md:h-80 rounded-full object-cover shadow-2xl"
-                data-testid="img-skull-logo"
+              <Logo 
+                className="w-72 h-72 md:w-80 md:h-80 border-4 border-white shadow-2xl"
               />
             </div>
           </div>
