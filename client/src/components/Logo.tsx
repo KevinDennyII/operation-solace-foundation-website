@@ -1,4 +1,3 @@
-import logoImage from "@assets/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg";
 import clsx from "clsx";
 
 interface LogoProps {
@@ -9,9 +8,10 @@ interface LogoProps {
 export function Logo({ className, alt = "Operation Solace Logo" }: LogoProps) {
   return (
     <img
-      src={logoImage}
+      src="/images/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg"
       alt={alt}
-      className={clsx("object-contain", className)}
+      className={clsx("object-contain rounded-full", className)}
+      data-testid="img-logo"
     />
   );
 }

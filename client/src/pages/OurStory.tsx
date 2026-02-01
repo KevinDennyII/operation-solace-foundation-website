@@ -3,7 +3,6 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Heart, Star, ArrowRight, Quote, Calendar } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import eventPhoto from "@assets/8e38bf695a18c8490a2e3cb64268d6c6af063942-1_1769068811823.jpeg";
 
 export default function OurStory() {
   return (
@@ -100,17 +99,16 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* Community Events Section */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                 <img 
-                  src={eventPhoto} 
-                  alt="Operation Solace community event booth" 
+                  src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2089&auto=format&fit=crop" 
+                  alt="Veterans community gathering" 
                   className="w-full h-[400px] object-cover"
-                  data-testid="img-event"
+                  data-testid="img-community"
                 />
               </div>
             </div>
@@ -123,10 +121,10 @@ export default function OurStory() {
                 Spreading the Message
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                We actively participate in community events to raise awareness about psychedelic therapy for veterans. Our booth honors fallen heroes while educating the public about alternative healing paths.
+                We actively participate in community events to raise awareness about psychedelic therapy for veterans. Our outreach honors fallen heroes while educating the public about alternative healing paths.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                From Day of the Dead celebrations to veteran appreciation events, we meet our community where they are and share the hope of healing.
+                From veteran appreciation events to community gatherings, we meet people where they are and share the hope of healing.
               </p>
             </div>
           </div>
