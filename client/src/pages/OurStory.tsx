@@ -3,7 +3,6 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Heart, Star, ArrowRight, Quote, Calendar } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import eventPhoto from "@assets/8e38bf695a18c8490a2e3cb64268d6c6af063942-1_1769068811823.jpeg";
 
 export default function OurStory() {
   return (
@@ -107,7 +106,7 @@ export default function OurStory() {
             <div className="order-2 lg:order-1">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                 <img 
-                  src={eventPhoto} 
+                  src="/ruck-day.jpg"
                   alt="Operation Solace community event booth" 
                   className="w-full h-[400px] object-cover"
                   data-testid="img-event"
