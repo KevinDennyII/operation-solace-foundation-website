@@ -1,52 +1,132 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FileText, BookOpen, Microscope, ArrowRight, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import { useState } from "react";
 
 const resources = [
   {
     title: "Psychedelic treatment for co-occurring alcohol misuse and post-traumatic stress symptoms among United States Special Operations Forces Veterans",
     type: "Research Study",
-    icon: FileText,
     description: "An in-depth analysis of how psychedelic therapies can address complex co-occurring conditions in the SOF community.",
-    link: "#"
+    link: "https://akjournals.com/view/journals/2054/5/3/article-p149.xml"
   },
   {
     title: "Exploring the potential of psychedelics for the betterment of all",
     type: "Article",
-    icon: Globe,
     description: "A comprehensive look at the societal and individual benefits of psychedelic medicine beyond clinical settings.",
-    link: "#"
+    link: "https://psychedelics.berkeley.edu/"
   },
   {
     title: "Chapter 5 - A case report SPECT study and theoretical rationale for the sequential administration of ibogaine and 5-MeO-DMT",
     type: "Book Chapter",
-    icon: BookOpen,
     description: "Scientific case report and rationale for sequential administration of ibogaine and 5-MeO-DMT in treating alcohol use disorder.",
-    link: "#"
+    link: "https://www.sciencedirect.com/science/chapter/bookseries/abs/pii/S0079612318300931?via%3Dihub"
   },
   {
     title: "Advancing the Science & Application of Psychedelics to Improve Mental Health",
     type: "Scientific Paper",
-    icon: Microscope,
     description: "Current advancements in psychedelic science and their practical applications for improving mental health outcomes.",
-    link: "#"
+    link: "https://dellmed.utexas.edu/units/charmaine-and-gordon-mcgill-center-for-psychedelic-research-and-therapy"
   },
   {
     title: "Translational Psychedelic Research Program",
     type: "Research Program",
-    icon: Microscope,
     description: "Information about translational research programs bridging the gap between scientific discovery and clinical application.",
-    link: "#"
+    link: "https://psychedelics.ucsf.edu/#Studies"
   },
   {
     title: "Welcome to the world’s largest psychedelic science research center",
     type: "Organization",
-    icon: Globe,
     description: "Discover the leading center for psychedelic science research and their groundbreaking work in the field.",
-    link: "#"
+    link: "https://hopkinspsychedelic.org/"
   }
 ];
+
+const FAVICON_BASE_URL = "https://www.google.com/s2/favicons";
+const FAVICON_SIZE = 128;
+
+const getFavicon = (url: string) => {
+  try {
+    const domain = new URL(url).hostname;
+    return `${FAVICON_BASE_URL}?domain=${domain}&sz=${FAVICON_SIZE}`;
+  } catch (e) {
+    return "";
+  }
+};
+
+const FallbackIcon = () => (
+  <svg 
+    className="w-8 h-8 text-primary" 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <path d="M15 3h6v6"/>
+    <path d="M10 14 21 3"/>
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+  </svg>
+);
+
+function ResourceIcon({ url, type }: { url: string; type: string }) {
+  const [error, setError] = useState(false);
+
+  if (error) {
+    return <FallbackIcon />;
+  }
+
+  return (
+    <img 
+      src={getFavicon(url)} 
+      alt={`${type} icon`}
+      className="w-10 h-10 object-contain"
+      onError={() => setError(true)}
+    />
+  );
+}
+
+function ResourceCard({ resource }: { resource: typeof resources[0] }) {
+  return (
+    <a 
+      href={resource.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex flex-col p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300 hover:border-primary/20"
+    >
+      <div className="mb-6">
+        <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center border border-border/50 shadow-sm overflow-hidden group-hover:border-primary/20 transition-colors duration-300">
+          <ResourceIcon url={resource.link} type={resource.type} />
+        </div>
+      </div>
+      
+      <div className="mb-4">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
+          {resource.type}
+        </span>
+      </div>
+      
+      <h3 className="text-xl font-bold mb-3 font-display text-primary leading-snug min-h-[3.5rem] group-hover:text-secondary transition-colors">
+        {resource.title}
+      </h3>
+      
+      <p className="text-muted-foreground mb-8 flex-grow">
+        {resource.description}
+      </p>
+      
+      <div className="mt-auto">
+        <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+          Read More <ExternalLink className="ml-2 w-4 h-4" />
+        </Button>
+      </div>
+    </a>
+  );
+}
 
 export default function Resources() {
   return (
@@ -75,36 +155,7 @@ export default function Resources() {
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {resources.map((resource, index) => (
-              <div 
-                key={index}
-                className="group flex flex-col p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300 hover:border-primary/20"
-              >
-                <div className="mb-6">
-                  <div className="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                    <resource.icon className="w-6 h-6" />
-                  </div>
-                </div>
-                
-                <div className="mb-4">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    {resource.type}
-                  </span>
-                </div>
-                
-                <h3 className="text-xl font-bold mb-3 font-display text-primary leading-snug min-h-[3.5rem]">
-                  {resource.title}
-                </h3>
-                
-                <p className="text-muted-foreground mb-8 flex-grow">
-                  {resource.description}
-                </p>
-                
-                <div className="mt-auto">
-                  <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
-                    Read More <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
+              <ResourceCard key={index} resource={resource} />
             ))}
           </div>
         </div>

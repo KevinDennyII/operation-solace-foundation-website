@@ -1,8 +1,174 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Leaf, Brain, Users, MessageCircle, ArrowRight, Shield } from "lucide-react";
+import { Leaf, Brain, Users, MessageCircle, ArrowRight, Shield, LucideIcon } from "lucide-react";
 import { Link } from "wouter";
+
+interface ProgramData {
+  id: string;
+  tag: {
+    label: string;
+    icon: LucideIcon;
+    colorClass: string;
+    iconColorClass: string;
+    textColorClass: string;
+  };
+  title: string;
+  description: string;
+  features: {
+    text: string;
+    icon: LucideIcon;
+    iconColorClass: string;
+  }[];
+  image: {
+    src: string;
+    alt: string;
+    testId: string;
+  };
+}
+
+const PROGRAMS: ProgramData[] = [
+  {
+    id: "therapy",
+    tag: {
+      label: "Therapy Access",
+      icon: Leaf,
+      colorClass: "bg-green-100",
+      textColorClass: "text-green-800",
+      iconColorClass: "text-green-800",
+    },
+    title: "Psychedelic-Assisted Therapy",
+    description: "We connect veterans with safe, clinically-guided psychedelic therapy programs. These transformative experiences have shown remarkable results for PTSD, depression, and moral injury.",
+    features: [
+      { text: "Vetted, safe retreat centers and practitioners", icon: Shield, iconColorClass: "text-green-600" },
+      { text: "Plant medicine experiences (psilocybin, ayahuasca)", icon: Shield, iconColorClass: "text-green-600" },
+      { text: "Integration support before and after", icon: Shield, iconColorClass: "text-green-600" },
+    ],
+    image: {
+      src: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2022&auto=format&fit=crop",
+      alt: "Peaceful meditation and healing retreat",
+      testId: "img-therapy",
+    },
+  },
+  {
+    id: "education",
+    tag: {
+      label: "Education",
+      icon: Brain,
+      colorClass: "bg-blue-100",
+      textColorClass: "text-blue-800",
+      iconColorClass: "text-blue-800",
+    },
+    title: "Awareness & Education",
+    description: "We're committed to reducing the stigma around psychedelic healing and educating the public about its benefits for veteran mental health.",
+    features: [
+      { text: "Public awareness campaigns", icon: Brain, iconColorClass: "text-blue-600" },
+      { text: "Educational resources on psychedelic research", icon: Brain, iconColorClass: "text-blue-600" },
+      { text: "Advocacy for veteran access to alternative treatments", icon: Brain, iconColorClass: "text-blue-600" },
+    ],
+    image: {
+      src: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=2070&auto=format&fit=crop",
+      alt: "Education and awareness",
+      testId: "img-education",
+    },
+  },
+  {
+    id: "community",
+    tag: {
+      label: "Community",
+      icon: Users,
+      colorClass: "bg-amber-100",
+      textColorClass: "text-amber-800",
+      iconColorClass: "text-amber-800",
+    },
+    title: "Community Building",
+    description: "Healing is not a solo journey. We build a tribe of like-minded individuals who have experienced plant medicine and can support each other's growth.",
+    features: [
+      { text: "Peer support networks", icon: Users, iconColorClass: "text-amber-600" },
+      { text: "Regular community gatherings and events", icon: Users, iconColorClass: "text-amber-600" },
+      { text: "Rebuilding the brotherhood lost after service", icon: Users, iconColorClass: "text-amber-600" },
+    ],
+    image: {
+      src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2069&auto=format&fit=crop",
+      alt: "Veterans community gathering",
+      testId: "img-community",
+    },
+  },
+];
+
+function ProgramSection({ program, isReversed }: { program: ProgramData; isReversed: boolean }) {
+  return (
+    <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 last:mb-0">
+      <div className={isReversed ? "order-2 lg:order-1" : "order-1"}>
+        {isReversed ? (
+          <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <img 
+              src={program.image.src} 
+              alt={program.image.alt} 
+              className="w-full h-[350px] object-cover"
+              data-testid={program.image.testId}
+            />
+          </div>
+        ) : (
+          <div>
+            <div className={`inline-flex items-center px-4 py-2 rounded-full ${program.tag.colorClass} ${program.tag.textColorClass} text-sm font-semibold mb-6`}>
+              <program.tag.icon className="w-4 h-4 mr-2" />
+              {program.tag.label}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
+              {program.title}
+            </h2>
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              {program.description}
+            </p>
+            <ul className="space-y-4 mb-8">
+              {program.features.map((feature, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <feature.icon className={`w-5 h-5 ${feature.iconColorClass} mt-1 flex-shrink-0`} />
+                  <span className="text-muted-foreground">{feature.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      
+      <div className={isReversed ? "order-1 lg:order-2" : "order-2"}>
+        {isReversed ? (
+          <div>
+            <div className={`inline-flex items-center px-4 py-2 rounded-full ${program.tag.colorClass} ${program.tag.textColorClass} text-sm font-semibold mb-6`}>
+              <program.tag.icon className="w-4 h-4 mr-2" />
+              {program.tag.label}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
+              {program.title}
+            </h2>
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              {program.description}
+            </p>
+            <ul className="space-y-4 mb-8">
+              {program.features.map((feature, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <feature.icon className={`w-5 h-5 ${feature.iconColorClass} mt-1 flex-shrink-0`} />
+                  <span className="text-muted-foreground">{feature.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <img 
+              src={program.image.src} 
+              alt={program.image.alt} 
+              className="w-full h-[350px] object-cover"
+              data-testid={program.image.testId}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function Programs() {
   return (
@@ -25,122 +191,13 @@ export default function Programs() {
 
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto container-padding">
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-            <div className="order-2 lg:order-1">
-              <div className="rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2022&auto=format&fit=crop" 
-                  alt="Peaceful meditation and healing retreat" 
-                  className="w-full h-[350px] object-cover"
-                  data-testid="img-therapy"
-                />
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold mb-6">
-                <Leaf className="w-4 h-4 mr-2" />
-                Therapy Access
-              </div>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
-                Psychedelic-Assisted Therapy
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                We connect veterans with safe, clinically-guided psychedelic therapy programs. These transformative experiences have shown remarkable results for PTSD, depression, and moral injury.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Vetted, safe retreat centers and practitioners</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Plant medicine experiences (psilocybin, ayahuasca)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Integration support before and after</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-            <div>
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold mb-6">
-                <Brain className="w-4 h-4 mr-2" />
-                Education
-              </div>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
-                Awareness & Education
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                We're committed to reducing the stigma around psychedelic healing and educating the public about its benefits for veteran mental health.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <Brain className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Public awareness campaigns</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Brain className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Educational resources on psychedelic research</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Brain className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Advocacy for veteran access to alternative treatments</span>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <div className="rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Education and awareness" 
-                  className="w-full h-[350px] object-cover"
-                  data-testid="img-education"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2069&auto=format&fit=crop" 
-                  alt="Veterans community gathering" 
-                  className="w-full h-[350px] object-cover"
-                  data-testid="img-community"
-                />
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-amber-100 text-amber-800 text-sm font-semibold mb-6">
-                <Users className="w-4 h-4 mr-2" />
-                Community
-              </div>
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-primary">
-                Community Building
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Healing is not a solo journey. We build a tribe of like-minded individuals who have experienced plant medicine and can support each other's growth.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <Users className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Peer support networks</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Users className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Regular community gatherings and events</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Users className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">Rebuilding the brotherhood lost after service</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {PROGRAMS.map((program, index) => (
+            <ProgramSection 
+              key={program.id} 
+              program={program} 
+              isReversed={index % 2 === 0} 
+            />
+          ))}
         </div>
       </section>
 

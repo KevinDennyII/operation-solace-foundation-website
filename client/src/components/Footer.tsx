@@ -3,6 +3,34 @@ import { Heart } from "lucide-react";
 import { SiInstagram } from "react-icons/si";
 import { Logo } from "@/components/Logo";
 
+const PAGE_LINKS = [
+  { href: "/our-approach", label: "Our Approach", testId: "link-footer-approach" },
+  { href: "/programs", label: "Programs", testId: "link-footer-programs" },
+  { href: "/resources", label: "Resources", testId: "link-footer-resources" },
+  { href: "/our-story", label: "Our Story", testId: "link-footer-story" },
+  { href: "/contact", label: "Contact", testId: "link-footer-contact" },
+] as const;
+
+const SUPPORT_LINKS = [
+  { 
+    href: "https://www.paypal.com/us/fundraiser/charity/5511140", 
+    label: "Donate via PayPal", 
+    testId: "link-footer-donate",
+    external: true
+  },
+  { 
+    href: "mailto:partnerships@operationsolace.org", 
+    label: "Corporate Partners", 
+    testId: "link-footer-partners",
+    external: true
+  },
+] as const;
+
+const LEGAL_LINKS = [
+  { label: "Privacy Policy" },
+  { label: "Terms of Service" },
+] as const;
+
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground py-12">
@@ -38,53 +66,41 @@ export function Footer() {
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-white/90">Pages</h2>
               <ul className="text-primary-foreground/70 font-light space-y-3">
-                <li>
-                  <Link href="/our-approach" className="hover:text-white transition-colors" data-testid="link-footer-approach">Our Approach</Link>
-                </li>
-                <li>
-                  <Link href="/programs" className="hover:text-white transition-colors" data-testid="link-footer-programs">Programs</Link>
-                </li>
-                <li>
-                  <Link href="/resources" className="hover:text-white transition-colors" data-testid="link-footer-resources">Resources</Link>
-                </li>
-                <li>
-                  <Link href="/our-story" className="hover:text-white transition-colors" data-testid="link-footer-story">Our Story</Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white transition-colors" data-testid="link-footer-contact">Contact</Link>
-                </li>
+                {PAGE_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="hover:text-white transition-colors" data-testid={link.testId}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-white/90">Support</h2>
               <ul className="text-primary-foreground/70 font-light space-y-3">
-                <li>
-                  <a 
-                    href="https://www.paypal.com/us/fundraiser/charity/5511140" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="hover:text-white transition-colors"
-                    data-testid="link-footer-donate"
-                  >
-                    Donate via PayPal
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:partnerships@operationsolace.org" className="hover:text-white transition-colors" data-testid="link-footer-partners">
-                    Corporate Partners
-                  </a>
-                </li>
+                {SUPPORT_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <a 
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      className="hover:text-white transition-colors"
+                      data-testid={link.testId}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-white/90">Legal</h2>
               <ul className="text-primary-foreground/70 font-light space-y-3">
-                <li>
-                  <span className="cursor-default">Privacy Policy</span>
-                </li>
-                <li>
-                  <span className="cursor-default">Terms of Service</span>
-                </li>
+                {LEGAL_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <span className="cursor-default">{link.label}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

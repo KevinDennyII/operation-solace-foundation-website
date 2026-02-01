@@ -10,6 +10,8 @@ import { insertContactMessageSchema, type InsertContactMessage } from "@shared/s
 import { useContactForm } from "@/hooks/use-contact";
 import { MapPin, Mail, Phone } from "lucide-react";
 
+const CONTACT_EMAIL = "info@operationsolace.org";
+
 export default function Contact() {
   const contactMutation = useContactForm();
 
@@ -67,8 +69,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-foreground text-lg">Email</h4>
-                    <a href="mailto:info@operationsolace.org" className="text-muted-foreground hover:text-primary transition-colors">
-                      info@operationsolace.org
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="text-muted-foreground hover:text-primary transition-colors">
+                      {CONTACT_EMAIL}
                     </a>
                   </div>
                 </div>
