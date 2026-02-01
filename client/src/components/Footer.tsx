@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Heart } from "lucide-react";
 import { SiInstagram } from "react-icons/si";
-import logoImage from "@assets/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg";
+import { Logo } from "@/components/Logo";
 
 export function Footer() {
   return (
@@ -10,11 +10,7 @@ export function Footer() {
         <div className="md:flex md:justify-between gap-8">
           <div className="mb-8 md:mb-0">
             <Link href="/" className="flex items-center gap-3" data-testid="link-footer-logo">
-              <img 
-                src={logoImage} 
-                alt="Operation Solace Logo" 
-                className="h-14 w-14 rounded-full object-cover"
-              />
+              <Logo className="h-14 w-14" />
               <span className="self-center text-2xl font-bold whitespace-nowrap font-display text-white">
                 Operation Solace
               </span>

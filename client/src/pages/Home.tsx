@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Shield, HeartHandshake, Users, ArrowRight, Leaf, CheckCircle } from "lucide-react";
 import { Link } from "wouter";
-import logoImage from "@assets/d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg";
+import { Logo } from "@/components/Logo";
 
 export default function Home() {
   return (
@@ -53,11 +53,9 @@ export default function Home() {
             
             <div className="relative flex justify-center">
               <div className="relative">
-                <img 
-                  src={logoImage} 
+                <Logo 
                   alt="Operation Solace - Soldier walking through mushroom field" 
-                  className="w-80 h-80 md:w-96 md:h-96 rounded-full object-cover shadow-2xl border-4 border-white"
-                  data-testid="img-hero"
+                  className="w-80 h-80 md:w-96 md:h-96 border-4 border-white shadow-2xl"
                 />
               </div>
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs">
