@@ -24,7 +24,7 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-card">
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -44,7 +44,7 @@ export default function OurStory() {
             </div>
             <div className="relative flex justify-center">
               <Logo 
-                className="w-72 h-72 md:w-80 md:h-80 border-4 border-white shadow-2xl"
+                className="w-72 h-72 md:w-80 md:h-80 border-4 border-background shadow-2xl"
               />
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function OurStory() {
 
       <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto container-padding">
-          <div className="bg-white rounded-2xl p-10 shadow-lg border border-border/50 relative">
+          <div className="bg-card rounded-2xl p-10 shadow-lg border border-border/50 relative">
             <Quote className="absolute top-6 left-6 w-12 h-12 text-primary/10" />
             <blockquote className="text-2xl md:text-3xl font-display text-primary leading-relaxed text-center mb-8 pt-8" data-testid="text-quote">
               "Peace is possible. Through community, through healing, through connection — we can restore the purpose and hope that service once gave us."
@@ -65,7 +65,7 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-card">
         <div className="max-w-7xl mx-auto container-padding">
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-12 text-center text-primary">
             What We Believe
@@ -103,9 +103,9 @@ export default function OurStory() {
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-background">
                 <img 
-                  src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2089&auto=format&fit=crop" 
+                  src="/images/IMG_6763.jpg" 
                   alt="Veterans community gathering" 
                   className="w-full h-[400px] object-cover"
                   data-testid="img-community"
@@ -113,7 +113,7 @@ export default function OurStory() {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-secondary/20 text-green-800 text-sm font-semibold mb-6">
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-secondary/10 text-secondary-foreground text-sm font-semibold mb-6">
                 <Calendar className="w-4 h-4 mr-2" />
                 Community Outreach
               </div>

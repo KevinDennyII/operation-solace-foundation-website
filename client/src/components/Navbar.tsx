@@ -41,7 +41,7 @@ export function Navbar() {
           <button
             onClick={() => setIsOpen(!isOpen)}
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-muted-foreground rounded-lg md:hidden hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-primary/20"
             aria-controls="navbar-sticky"
             aria-expanded={isOpen}
             data-testid="button-mobile-menu"
@@ -57,7 +57,7 @@ export function Navbar() {
           }`}
           id="navbar-sticky"
         >
-          <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-6 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
+          <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-border/50 rounded-lg bg-background md:space-x-6 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -66,7 +66,7 @@ export function Navbar() {
                   className={`block py-2 px-3 rounded md:p-0 transition-colors ${
                     location === link.href
                       ? "text-primary font-semibold"
-                      : "text-gray-700 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary"
+                      : "text-foreground/80 hover:bg-accent/10 md:hover:bg-transparent md:hover:text-primary"
                   }`}
                   data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                 >

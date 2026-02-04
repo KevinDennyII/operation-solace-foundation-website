@@ -18,7 +18,7 @@ const events: Event[] = [
     title: "Ruck Day",
     date: "Upcoming", 
     description: "It's Ruck Day. Let's move with purpose.",
-    flyerUrl: "/ruck-day.jpg",
+    flyerUrl: "/images/ruck-day.jpg",
     isUpcoming: true,
   },
   // Example past event structure (hidden for now as there are no past events yet)

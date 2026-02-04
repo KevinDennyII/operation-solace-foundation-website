@@ -76,7 +76,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="bg-white p-8 rounded-2xl border border-border/50">
+              <div className="bg-card p-8 rounded-2xl border border-border/50">
                 <h3 className="font-bold text-lg mb-4 font-display text-primary">For Veterans</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   If you're a veteran seeking support, please don't hesitate to reach out. We're here to listen and help you explore your options for healing. Your information is always kept confidential.
@@ -84,7 +84,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="bg-white p-8 lg:p-10 rounded-2xl shadow-lg border border-border">
+            <div className="bg-card p-8 lg:p-10 rounded-2xl shadow-lg border border-border">
               <h2 className="text-2xl font-display font-bold mb-6 text-primary">Send a Message</h2>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -97,7 +97,7 @@ export default function Contact() {
                         <FormControl>
                           <Input 
                             placeholder="Your name" 
-                            className="h-12 bg-gray-50 border-gray-200" 
+                            className="h-12 bg-background border-input" 
                             data-testid="input-name"
                             {...field} 
                           />
@@ -115,7 +115,7 @@ export default function Contact() {
                         <FormControl>
                           <Input 
                             placeholder="your@email.com" 
-                            className="h-12 bg-gray-50 border-gray-200" 
+                            className="h-12 bg-background border-input" 
                             data-testid="input-email"
                             {...field} 
                           />
@@ -133,7 +133,7 @@ export default function Contact() {
                         <FormControl>
                           <Textarea 
                             placeholder="How can we help?" 
-                            className="min-h-[150px] bg-gray-50 border-gray-200" 
+                            className="min-h-[150px] bg-background border-input" 
                             data-testid="input-message"
                             {...field} 
                           />

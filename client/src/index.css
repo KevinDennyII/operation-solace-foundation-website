@@ -9,37 +9,37 @@
   --font-display: 'Libre Baskerville', serif;
   --font-body: 'DM Sans', sans-serif;
 
-  /* Palette: Navy, Sage, Sand, White */
-  /* Primary: Deep Navy Blue - Trust, Authority */
-  --primary: 215 45% 25%;
-  --primary-foreground: 210 40% 98%;
+  /* Palette: Muerto Fest San Antonio Inspired */
+  /* Primary: Deep Royal Purple - Spirituality, Mourning, Royalty */
+  --primary: 265 60% 25%;
+  --primary-foreground: 0 0% 100%;
 
-  /* Secondary: Soft Sage/Olive - Healing, Growth, Military nod */
-  --secondary: 140 15% 55%;
-  --secondary-foreground: 0 0% 100%;
+  /* Secondary: Vibrant Marigold/Orange - Cempasúchil, Sun, Path */
+  --secondary: 35 90% 55%;
+  --secondary-foreground: 265 60% 15%; /* Dark Purple text for contrast */
 
-  /* Backgrounds: Warm Off-White */
-  --background: 40 20% 98%;
-  --foreground: 215 25% 20%;
+  /* Backgrounds: Sugar Skull Bone White */
+  --background: 40 30% 97%;
+  --foreground: 265 40% 15%; /* Very Dark Purple/Black */
   
   --card: 0 0% 100%;
-  --card-foreground: 215 25% 20%;
+  --card-foreground: 265 40% 15%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 215 25% 20%;
+  --popover-foreground: 265 40% 15%;
   
-  --muted: 210 20% 96%;
-  --muted-foreground: 215 15% 45%;
+  --muted: 265 20% 94%;
+  --muted-foreground: 265 20% 40%;
   
-  --accent: 140 25% 95%;
-  --accent-foreground: 140 30% 30%;
+  --accent: 330 75% 55%; /* Hot Pink/Magenta */
+  --accent-foreground: 0 0% 100%;
   
   --destructive: 0 65% 50%;
   --destructive-foreground: 210 40% 98%;
 
-  --border: 215 15% 90%;
-  --input: 215 15% 90%;
-  --ring: 215 45% 25%;
+  --border: 265 20% 85%;
+  --input: 265 20% 85%;
+  --ring: 265 60% 25%;
   
   --radius: 0.5rem;
 }
@@ -65,7 +65,7 @@
   }
   
   .glass-panel {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+    @apply bg-background/80 backdrop-blur-md border border-border/20 shadow-xl;
   }
 
   .container-padding {

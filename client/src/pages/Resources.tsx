@@ -151,7 +151,7 @@ export default function Resources() {
       </section>
 
       {/* RESOURCES GRID */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-card">
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {resources.map((resource, index) => (

@@ -18,7 +18,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto container-padding">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-secondary/20 text-green-800 text-sm font-medium mb-6">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-sm font-medium mb-6">
                 <Leaf className="w-4 h-4 mr-2" />
                 Psychedelic-Assisted Healing
               </div>
@@ -60,8 +60,8 @@ export default function Home() {
               </div>
               <div className="absolute -bottom-10 right-0 bg-white p-4 rounded-xl shadow-xl border border-border max-w-xs z-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-5 h-5 text-green-700" />
+                  <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-teal-700" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-primary" data-testid="text-donation-model">100% Goes to Veterans</p>
@@ -75,10 +75,20 @@ export default function Home() {
       </section>
 
       {/* 100% DONATION MODEL */}
-      <section className="py-20 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto container-padding text-center">
-          <h2 className="text-3xl md:text-5xl font-display font-bold mb-6">100% Donation Model</h2>
-          <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
+      <section className="py-20 relative bg-primary text-primary-foreground overflow-hidden">
+        {/* Background Image Overlay */}
+        <div className="absolute inset-0 z-0">
+           <img 
+             src="/images/ruck-day.jpg" 
+             alt="Veterans supporting veterans" 
+             className="w-full h-full object-cover opacity-30"
+           />
+          <div className="absolute inset-0 bg-primary/90 mix-blend-multiply" />
+        </div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto container-padding text-center">
+          <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-white">100% Donation Model</h2>
+          <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
             Every dollar you donate goes directly to providing care, resources, and connection for veterans and their families. No administrative fees. Complete transparency.
           </p>
           <Link href="/our-approach">
@@ -101,7 +111,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300" data-testid="card-therapy">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-700 mb-6">
+              <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center text-teal-700 mb-6">
                 <Leaf className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold mb-3 font-display">Therapy Access</h3>
@@ -111,7 +121,7 @@ export default function Home() {
             </div>
 
             <div className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300" data-testid="card-awareness">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6">
+              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-primary mb-6">
                 <Shield className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold mb-3 font-display">Awareness</h3>
@@ -121,7 +131,7 @@ export default function Home() {
             </div>
 
             <div className="p-8 rounded-2xl bg-background border border-border/50 hover:shadow-lg transition-all duration-300" data-testid="card-community">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-700 mb-6">
+              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-700 mb-6">
                 <Users className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold mb-3 font-display">Community</h3>
@@ -148,7 +158,7 @@ export default function Home() {
             <div>
               <div className="rounded-2xl overflow-hidden shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2074&auto=format&fit=crop" 
+                  src="/images/IMG_0911.jpg" 
                   alt="Veterans community support" 
                   className="w-full h-[400px] object-cover"
                   data-testid="img-community"
