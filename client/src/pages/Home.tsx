@@ -79,7 +79,7 @@ export default function Home() {
         {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0">
            <img 
-             src="/images/ruck-day.jpg" 
+             src="/images/Untitled2.jpg" 
              alt="Veterans supporting veterans" 
              className="w-full h-full object-cover opacity-30"
            />
