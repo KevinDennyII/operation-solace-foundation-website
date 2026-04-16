@@ -35,7 +35,9 @@ The backend serves both the API and static files in production. In development, 
 - **Schema Location**: `shared/schema.ts` contains table definitions
 - **Migrations**: Managed via `drizzle-kit push` command
 
-Current schema includes a `contact_messages` table for storing contact form submissions.
+Current schema includes:
+- `contact_messages` table for storing contact form submissions
+- `events` table for storing foundation events (title, date, time, location, description, flyer image URL)
 
 ### Shared Code Pattern
 The `shared/` directory contains code used by both frontend and backend:
@@ -67,6 +69,12 @@ The following branded images are used throughout the site (located in `attached_
 - **Main Logo**: Soldier walking through mushroom field (d34f41fde710d99d1cd70ae67b4575765f161d6d-1_1769068811822.jpeg) - Used in navbar, footer, and hero
 - **Skull Logo**: Psychedelic skull with helmet (4c0ee530559d5b38f9067c618b160608a1c9dfad-2_1769068811822.jpeg) - Used on Our Story page
 - **Event Photo**: Community outreach booth (8e38bf695a18c8490a2e3cb64268d6c6af063942-1_1769068811823.jpeg) - Used on Our Story page
+
+### Event Management
+- **Admin Panel**: Password-protected at `/admin/events` — allows the director to create/delete events
+- **File Uploads**: Multer handles flyer image uploads, stored in the `uploads/` directory, served at `/uploads/`
+- **Admin Password**: Set via `ADMIN_PASSWORD` environment variable (defaults to `solace2025`)
+- **Public Events Page**: `/events` — fetches events from `/api/events` API endpoint
 
 ### Third-Party UI Libraries
 - **Radix UI**: Accessible component primitives (dialogs, dropdowns, forms, etc.)
