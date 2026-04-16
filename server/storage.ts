@@ -5,6 +5,7 @@ export interface IStorage {
   createContactMessage(message: InsertContactMessage): Promise<ContactMessage>;
   getEvents(): Promise<Event[]>;
   createEvent(event: InsertEvent): Promise<Event>;
+  updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event>;
   deleteEvent(id: number): Promise<void>;
 }
 
@@ -23,6 +24,13 @@ export class DatabaseStorage implements IStorage {
   async createEvent(event: InsertEvent): Promise<Event> {
     if (!db) throw new Error("Database not initialized");
     const [result] = await db.insert(events).values(event).returning();
+    return result;
+  }
+
+  async updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event> {
+    if (!db) throw new Error("Database not initialized");
+    const { eq } = await import("drizzle-orm");
+    const [result] = await db.update(events).set(event).where(eq(events.id, id)).returning();
     return result;
   }
 
@@ -63,6 +71,13 @@ export class MemStorage implements IStorage {
     };
     this.eventsList.push(newEvent);
     return newEvent;
+  }
+
+  async updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event> {
+    const idx = this.eventsList.findIndex(e => e.id === id);
+    if (idx === -1) throw new Error("Event not found");
+    this.eventsList[idx] = { ...this.eventsList[idx], ...event };
+    return this.eventsList[idx];
   }
 
   async deleteEvent(id: number): Promise<void> {

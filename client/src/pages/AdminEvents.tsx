@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Upload, Calendar, Clock, MapPin, Lock, ImageIcon } from "lucide-react";
+import { Trash2, Upload, Pencil, Calendar, Clock, MapPin, Lock, ImageIcon, X, Plus } from "lucide-react";
 
 interface Event {
   id: number;
@@ -28,6 +28,7 @@ interface EventFormData {
   location: string;
   description: string;
   flyer: File | null;
+  clearFlyer: boolean;
 }
 
 const EMPTY_FORM: EventFormData = {
@@ -37,7 +38,10 @@ const EMPTY_FORM: EventFormData = {
   location: "",
   description: "",
   flyer: null,
+  clearFlyer: false,
 };
+
+type Mode = { type: "create" } | { type: "edit"; event: Event };
 
 export default function AdminEvents() {
   const { toast } = useToast();
@@ -48,6 +52,7 @@ export default function AdminEvents() {
   const [authError, setAuthError] = useState("");
   const [form, setForm] = useState<EventFormData>(EMPTY_FORM);
   const [flyerPreview, setFlyerPreview] = useState<string | null>(null);
+  const [mode, setMode] = useState<Mode>({ type: "create" });
 
   const { data: events = [], isLoading } = useQuery<Event[]>({
     queryKey: ["/api/events"],
@@ -82,7 +87,6 @@ export default function AdminEvents() {
       formData.append("location", data.location);
       formData.append("description", data.description);
       if (data.flyer) formData.append("flyer", data.flyer);
-
       const res = await fetch("/api/admin/events", {
         method: "POST",
         headers: { "x-admin-password": password },
@@ -96,10 +100,39 @@ export default function AdminEvents() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/events"] });
-      setForm(EMPTY_FORM);
-      setFlyerPreview(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      resetForm();
       toast({ title: "Event created!", description: "The event has been added successfully." });
+    },
+    onError: (err: Error) => {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: EventFormData }) => {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("date", data.date);
+      formData.append("time", data.time);
+      formData.append("location", data.location);
+      formData.append("description", data.description);
+      if (data.flyer) formData.append("flyer", data.flyer);
+      if (data.clearFlyer) formData.append("clearFlyer", "true");
+      const res = await fetch(`/api/admin/events/${id}`, {
+        method: "PATCH",
+        headers: { "x-admin-password": password },
+        body: formData,
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Failed to update event");
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/events"] });
+      resetForm();
+      toast({ title: "Event updated!", description: "Your changes have been saved." });
     },
     onError: (err: Error) => {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -116,6 +149,7 @@ export default function AdminEvents() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/events"] });
+      if (mode.type === "edit") resetForm();
       toast({ title: "Event deleted", description: "The event has been removed." });
     },
     onError: () => {
@@ -123,15 +157,40 @@ export default function AdminEvents() {
     },
   });
 
+  function resetForm() {
+    setForm(EMPTY_FORM);
+    setFlyerPreview(null);
+    setMode({ type: "create" });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function startEdit(event: Event) {
+    setMode({ type: "edit", event });
+    setForm({
+      title: event.title,
+      date: event.date,
+      time: event.time,
+      location: event.location,
+      description: event.description,
+      flyer: null,
+      clearFlyer: false,
+    });
+    setFlyerPreview(event.flyerUrl);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
-    setForm(f => ({ ...f, flyer: file }));
+    setForm(f => ({ ...f, flyer: file, clearFlyer: false }));
     if (file) {
-      const url = URL.createObjectURL(file);
-      setFlyerPreview(url);
-    } else {
-      setFlyerPreview(null);
+      setFlyerPreview(URL.createObjectURL(file));
     }
+  }
+
+  function removeFlyer() {
+    setForm(f => ({ ...f, flyer: null, clearFlyer: true }));
+    setFlyerPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -140,8 +199,15 @@ export default function AdminEvents() {
       toast({ title: "Missing fields", description: "Please fill in all required fields.", variant: "destructive" });
       return;
     }
-    createMutation.mutate(form);
+    if (mode.type === "edit") {
+      updateMutation.mutate({ id: mode.event.id, data: form });
+    } else {
+      createMutation.mutate(form);
+    }
   }
+
+  const isSubmitting = createMutation.isPending || updateMutation.isPending;
+  const isEditing = mode.type === "edit";
 
   if (!isAuthenticated) {
     return (
@@ -156,7 +222,6 @@ export default function AdminEvents() {
               <h1 className="text-3xl font-display font-bold text-primary mb-2">Admin Access</h1>
               <p className="text-muted-foreground">Enter the admin password to manage events.</p>
             </div>
-
             <Card>
               <CardContent className="pt-6">
                 <form
@@ -172,6 +237,7 @@ export default function AdminEvents() {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Enter admin password"
+                      autoComplete="current-password"
                       autoFocus
                     />
                     {authError && (
@@ -206,18 +272,41 @@ export default function AdminEvents() {
             Event Management
           </h1>
           <p className="text-lg text-muted-foreground">
-            Create and manage upcoming events for Operation Solace Foundation.
+            Create, edit, and manage upcoming events for Operation Solace Foundation.
           </p>
         </div>
       </section>
 
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto container-padding">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
 
-            {/* CREATE FORM */}
+            {/* FORM PANEL */}
             <div>
-              <h2 className="text-2xl font-display font-bold mb-6">Add New Event</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-display font-bold">
+                  {isEditing ? "Edit Event" : "Add New Event"}
+                </h2>
+                {isEditing && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={resetForm}
+                    data-testid="button-cancel-edit"
+                    className="text-muted-foreground"
+                  >
+                    <X className="w-4 h-4 mr-1" /> Cancel
+                  </Button>
+                )}
+              </div>
+
+              {isEditing && (
+                <div className="mb-4 p-3 bg-secondary/10 border border-secondary/30 rounded-lg text-sm text-secondary font-medium flex items-center gap-2">
+                  <Pencil className="w-4 h-4 flex-shrink-0" />
+                  Editing: <span className="font-bold">{mode.event.title}</span>
+                </div>
+              )}
+
               <Card>
                 <CardContent className="pt-6">
                   <form onSubmit={handleSubmit} className="space-y-5">
@@ -280,29 +369,53 @@ export default function AdminEvents() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Event Flyer (optional)</Label>
-                      <div
-                        className="border-2 border-dashed border-border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors"
-                        onClick={() => fileInputRef.current?.click()}
-                        data-testid="dropzone-flyer"
-                      >
-                        {flyerPreview ? (
-                          <div className="relative">
-                            <img
-                              src={flyerPreview}
-                              alt="Flyer preview"
-                              className="w-full max-h-48 object-contain rounded"
-                            />
-                            <p className="text-xs text-center text-muted-foreground mt-2">{form.flyer?.name}</p>
+                      <Label>Event Flyer {isEditing ? "(replace or remove)" : "(optional)"}</Label>
+
+                      {flyerPreview && !form.clearFlyer ? (
+                        <div className="relative border border-border rounded-lg overflow-hidden">
+                          <img
+                            src={flyerPreview}
+                            alt="Flyer preview"
+                            className="w-full max-h-48 object-contain bg-muted/30"
+                          />
+                          <div className="absolute top-2 right-2 flex gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="secondary"
+                              onClick={() => fileInputRef.current?.click()}
+                              data-testid="button-replace-flyer"
+                            >
+                              <Pencil className="w-3 h-3 mr-1" /> Replace
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="destructive"
+                              onClick={removeFlyer}
+                              data-testid="button-remove-flyer"
+                            >
+                              <X className="w-3 h-3 mr-1" /> Remove
+                            </Button>
                           </div>
-                        ) : (
+                          {form.flyer && (
+                            <p className="text-xs text-center text-muted-foreground py-1 bg-muted/50">{form.flyer.name}</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div
+                          className="border-2 border-dashed border-border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors"
+                          onClick={() => fileInputRef.current?.click()}
+                          data-testid="dropzone-flyer"
+                        >
                           <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
                             <ImageIcon className="w-10 h-10 mb-2" />
                             <p className="text-sm">Click to upload flyer image</p>
                             <p className="text-xs mt-1">PNG, JPG, WEBP up to 10MB</p>
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
+
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -313,15 +426,30 @@ export default function AdminEvents() {
                       />
                     </div>
 
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      data-testid="button-create-event"
-                      disabled={createMutation.isPending}
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      {createMutation.isPending ? "Creating Event..." : "Create Event"}
-                    </Button>
+                    <div className="flex gap-3">
+                      <Button
+                        type="submit"
+                        className="flex-1"
+                        data-testid="button-submit-event"
+                        disabled={isSubmitting}
+                      >
+                        {isEditing
+                          ? <><Pencil className="w-4 h-4 mr-2" />{isSubmitting ? "Saving..." : "Save Changes"}</>
+                          : <><Plus className="w-4 h-4 mr-2" />{isSubmitting ? "Creating..." : "Create Event"}</>
+                        }
+                      </Button>
+                      {isEditing && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={resetForm}
+                          data-testid="button-cancel-edit-bottom"
+                          disabled={isSubmitting}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
                   </form>
                 </CardContent>
               </Card>
@@ -329,71 +457,100 @@ export default function AdminEvents() {
 
             {/* EVENTS LIST */}
             <div>
-              <h2 className="text-2xl font-display font-bold mb-6">Existing Events</h2>
+              <h2 className="text-2xl font-display font-bold mb-6">
+                All Events <span className="text-muted-foreground text-lg font-normal">({events.length})</span>
+              </h2>
 
               {isLoading ? (
                 <div className="space-y-4">
-                  {[1, 2].map(i => (
-                    <div key={i} className="h-32 bg-muted animate-pulse rounded-xl" />
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="h-28 bg-muted animate-pulse rounded-xl" />
                   ))}
                 </div>
               ) : events.length === 0 ? (
                 <Card>
                   <CardContent className="py-12 text-center text-muted-foreground">
                     <Calendar className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                    <p>No events yet. Create your first event above.</p>
+                    <p>No events yet. Create your first event using the form.</p>
                   </CardContent>
                 </Card>
               ) : (
                 <div className="space-y-4">
-                  {events.map(event => (
-                    <Card key={event.id} className="overflow-hidden" data-testid={`card-event-${event.id}`}>
-                      <div className="flex">
-                        {event.flyerUrl && (
-                          <div className="w-24 flex-shrink-0 relative">
-                            <img
-                              src={event.flyerUrl}
-                              alt={event.title}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 p-4">
-                          <div className="flex justify-between items-start gap-2">
-                            <div className="min-w-0">
-                              <h3 className="font-display font-bold text-lg leading-tight">{event.title}</h3>
-                              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm text-muted-foreground">
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="w-3.5 h-3.5" /> {event.date}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <Clock className="w-3.5 h-3.5" /> {event.time}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <MapPin className="w-3.5 h-3.5" /> {event.location}
-                                </span>
-                              </div>
-                              <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{event.description}</p>
+                  {events.map(event => {
+                    const isCurrentlyEditing = mode.type === "edit" && mode.event.id === event.id;
+                    return (
+                      <Card
+                        key={event.id}
+                        className={`overflow-hidden transition-all ${isCurrentlyEditing ? "ring-2 ring-secondary" : ""}`}
+                        data-testid={`card-event-${event.id}`}
+                      >
+                        <div className="flex">
+                          {event.flyerUrl && (
+                            <div className="w-20 flex-shrink-0 relative bg-muted">
+                              <img
+                                src={event.flyerUrl}
+                                alt={event.title}
+                                className="absolute inset-0 w-full h-full object-cover"
+                              />
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-destructive hover:text-destructive flex-shrink-0"
-                              data-testid={`button-delete-event-${event.id}`}
-                              onClick={() => {
-                                if (confirm(`Delete "${event.title}"?`)) {
-                                  deleteMutation.mutate(event.id);
-                                }
-                              }}
-                              disabled={deleteMutation.isPending}
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
+                          )}
+                          <div className="flex-1 p-4 min-w-0">
+                            <div className="flex justify-between items-start gap-2">
+                              <div className="min-w-0">
+                                <h3 className="font-display font-bold text-base leading-tight truncate">
+                                  {event.title}
+                                  {isCurrentlyEditing && (
+                                    <span className="ml-2 text-xs font-normal text-secondary">(editing)</span>
+                                  )}
+                                </h3>
+                                <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1 text-xs text-muted-foreground">
+                                  <span className="flex items-center gap-1">
+                                    <Calendar className="w-3 h-3" /> {event.date}
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3" /> {event.time}
+                                  </span>
+                                  <span className="flex items-center gap-1 truncate">
+                                    <MapPin className="w-3 h-3 flex-shrink-0" /> {event.location}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">{event.description}</p>
+                              </div>
+                              <div className="flex flex-col gap-1 flex-shrink-0">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-8 px-3 text-xs"
+                                  data-testid={`button-edit-event-${event.id}`}
+                                  onClick={() => isCurrentlyEditing ? resetForm() : startEdit(event)}
+                                  disabled={deleteMutation.isPending}
+                                >
+                                  {isCurrentlyEditing
+                                    ? <><X className="w-3 h-3 mr-1" />Cancel</>
+                                    : <><Pencil className="w-3 h-3 mr-1" />Edit</>
+                                  }
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 px-3 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  data-testid={`button-delete-event-${event.id}`}
+                                  onClick={() => {
+                                    if (confirm(`Delete "${event.title}"? This cannot be undone.`)) {
+                                      deleteMutation.mutate(event.id);
+                                    }
+                                  }}
+                                  disabled={deleteMutation.isPending}
+                                >
+                                  <Trash2 className="w-3 h-3 mr-1" /> Delete
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Card>
-                  ))}
+                      </Card>
+                    );
+                  })}
                 </div>
               )}
             </div>

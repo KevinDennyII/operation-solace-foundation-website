@@ -89,6 +89,37 @@ export async function registerRoutes(
     }
   });
 
+  app.patch("/api/admin/events/:id", upload.single("flyer"), async (req, res) => {
+    try {
+      const password = req.headers["x-admin-password"] as string;
+      if (password !== ADMIN_PASSWORD) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid event ID" });
+      }
+
+      const updates: Record<string, string | undefined> = {};
+      if (req.body.title) updates.title = req.body.title;
+      if (req.body.date) updates.date = req.body.date;
+      if (req.body.time) updates.time = req.body.time;
+      if (req.body.location) updates.location = req.body.location;
+      if (req.body.description) updates.description = req.body.description;
+      if (req.file) updates.flyerUrl = `/uploads/${req.file.filename}`;
+      if (req.body.clearFlyer === "true") updates.flyerUrl = undefined;
+
+      const event = await storage.updateEvent(id, updates);
+      res.json(event);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message });
+      }
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   app.delete("/api/admin/events/:id", async (req, res) => {
     try {
       const password = req.headers["x-admin-password"] as string;
