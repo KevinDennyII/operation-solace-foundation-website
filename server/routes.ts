@@ -1,8 +1,5 @@
 import type { Express } from "express";
 import type { Server } from "http";
-import path from "path";
-import fs from "fs";
-import multer from "multer";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { insertEventSchema } from "@shared/schema";
@@ -10,30 +7,14 @@ import { z } from "zod";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "solace2025";
 
-const uploadsDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+function checkAuth(req: { headers: Record<string, string | string[] | undefined> }, res: any): boolean {
+  const password = req.headers["x-admin-password"] as string;
+  if (password !== ADMIN_PASSWORD) {
+    res.status(401).json({ message: "Unauthorized" });
+    return false;
+  }
+  return true;
 }
-
-const diskStorage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `event-${Date.now()}${ext}`);
-  },
-});
-
-const upload = multer({
-  storage: diskStorage,
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only image files are allowed"));
-    }
-  },
-});
 
 export async function registerRoutes(
   httpServer: Server,
@@ -61,22 +42,19 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/admin/events", upload.single("flyer"), async (req, res) => {
+  app.post("/api/admin/events", async (req, res) => {
     try {
-      const password = req.headers["x-admin-password"] as string;
-      if (password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+      if (!checkAuth(req, res)) return;
 
-      const flyerUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+      const { title, date, time, location, description, flyerData } = req.body;
 
       const input = insertEventSchema.parse({
-        title: req.body.title,
-        date: req.body.date,
-        time: req.body.time,
-        location: req.body.location,
-        description: req.body.description,
-        flyerUrl,
+        title,
+        date,
+        time,
+        location,
+        description,
+        flyerUrl: flyerData || undefined,
       });
 
       const event = await storage.createEvent(input);
@@ -89,26 +67,25 @@ export async function registerRoutes(
     }
   });
 
-  app.patch("/api/admin/events/:id", upload.single("flyer"), async (req, res) => {
+  app.patch("/api/admin/events/:id", async (req, res) => {
     try {
-      const password = req.headers["x-admin-password"] as string;
-      if (password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+      if (!checkAuth(req, res)) return;
 
       const id = parseInt(req.params.id, 10);
       if (isNaN(id)) {
         return res.status(400).json({ message: "Invalid event ID" });
       }
 
-      const updates: Record<string, string | undefined> = {};
-      if (req.body.title) updates.title = req.body.title;
-      if (req.body.date) updates.date = req.body.date;
-      if (req.body.time) updates.time = req.body.time;
-      if (req.body.location) updates.location = req.body.location;
-      if (req.body.description) updates.description = req.body.description;
-      if (req.file) updates.flyerUrl = `/uploads/${req.file.filename}`;
-      if (req.body.clearFlyer === "true") updates.flyerUrl = undefined;
+      const { title, date, time, location, description, flyerData, clearFlyer } = req.body;
+
+      const updates: Record<string, string | null | undefined> = {};
+      if (title !== undefined) updates.title = title;
+      if (date !== undefined) updates.date = date;
+      if (time !== undefined) updates.time = time;
+      if (location !== undefined) updates.location = location;
+      if (description !== undefined) updates.description = description;
+      if (flyerData) updates.flyerUrl = flyerData;
+      if (clearFlyer) updates.flyerUrl = null;
 
       const event = await storage.updateEvent(id, updates);
       res.json(event);
@@ -122,10 +99,7 @@ export async function registerRoutes(
 
   app.delete("/api/admin/events/:id", async (req, res) => {
     try {
-      const password = req.headers["x-admin-password"] as string;
-      if (password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+      if (!checkAuth(req, res)) return;
 
       const id = parseInt(req.params.id, 10);
       if (isNaN(id)) {

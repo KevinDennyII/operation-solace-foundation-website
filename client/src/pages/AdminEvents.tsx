@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Upload, Pencil, Calendar, Clock, MapPin, Lock, ImageIcon, X, Plus } from "lucide-react";
+import { Trash2, Pencil, Calendar, Clock, MapPin, Lock, ImageIcon, X, Plus } from "lucide-react";
 
 interface Event {
   id: number;
@@ -28,6 +28,7 @@ interface EventFormData {
   location: string;
   description: string;
   flyer: File | null;
+  flyerDataUrl: string | null;
   clearFlyer: boolean;
 }
 
@@ -38,6 +39,7 @@ const EMPTY_FORM: EventFormData = {
   location: "",
   description: "",
   flyer: null,
+  flyerDataUrl: null,
   clearFlyer: false,
 };
 
@@ -80,17 +82,17 @@ export default function AdminEvents() {
 
   const createMutation = useMutation({
     mutationFn: async (data: EventFormData) => {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("date", data.date);
-      formData.append("time", data.time);
-      formData.append("location", data.location);
-      formData.append("description", data.description);
-      if (data.flyer) formData.append("flyer", data.flyer);
       const res = await fetch("/api/admin/events", {
         method: "POST",
-        headers: { "x-admin-password": password },
-        body: formData,
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({
+          title: data.title,
+          date: data.date,
+          time: data.time,
+          location: data.location,
+          description: data.description,
+          flyerData: data.flyerDataUrl || undefined,
+        }),
       });
       if (!res.ok) {
         const err = await res.json();
@@ -110,18 +112,18 @@ export default function AdminEvents() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: EventFormData }) => {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("date", data.date);
-      formData.append("time", data.time);
-      formData.append("location", data.location);
-      formData.append("description", data.description);
-      if (data.flyer) formData.append("flyer", data.flyer);
-      if (data.clearFlyer) formData.append("clearFlyer", "true");
       const res = await fetch(`/api/admin/events/${id}`, {
         method: "PATCH",
-        headers: { "x-admin-password": password },
-        body: formData,
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({
+          title: data.title,
+          date: data.date,
+          time: data.time,
+          location: data.location,
+          description: data.description,
+          flyerData: data.flyerDataUrl || undefined,
+          clearFlyer: data.clearFlyer || undefined,
+        }),
       });
       if (!res.ok) {
         const err = await res.json();
@@ -173,6 +175,7 @@ export default function AdminEvents() {
       location: event.location,
       description: event.description,
       flyer: null,
+      flyerDataUrl: event.flyerUrl,
       clearFlyer: false,
     });
     setFlyerPreview(event.flyerUrl);
@@ -181,14 +184,18 @@ export default function AdminEvents() {
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
-    setForm(f => ({ ...f, flyer: file, clearFlyer: false }));
-    if (file) {
-      setFlyerPreview(URL.createObjectURL(file));
-    }
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target?.result as string;
+      setForm(f => ({ ...f, flyer: file, flyerDataUrl: dataUrl, clearFlyer: false }));
+      setFlyerPreview(dataUrl);
+    };
+    reader.readAsDataURL(file);
   }
 
   function removeFlyer() {
-    setForm(f => ({ ...f, flyer: null, clearFlyer: true }));
+    setForm(f => ({ ...f, flyer: null, flyerDataUrl: null, clearFlyer: true }));
     setFlyerPreview(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
