@@ -64,17 +64,17 @@ export default function Events() {
                 <div
                   key={event.id}
                   data-testid={`event-upcoming-${event.id}`}
-                  className="w-full max-w-4xl mx-auto grid md:grid-cols-2 gap-0 bg-card rounded-xl overflow-hidden shadow-lg border border-border"
+                  className="w-full max-w-4xl mx-auto flex flex-col md:flex-row bg-card rounded-xl overflow-hidden shadow-lg border border-border"
                 >
-                  <div className="relative min-h-[320px]">
+                  <div className="w-full md:w-1/2 flex-shrink-0">
                     {event.flyerUrl ? (
                       <img
                         src={event.flyerUrl}
                         alt={event.title}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="w-full h-64 md:h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-muted flex items-center justify-center min-h-[320px]">
+                      <div className="w-full h-64 md:h-full bg-muted flex items-center justify-center">
                         <Calendar className="w-12 h-12 text-muted-foreground/40" />
                       </div>
                     )}
@@ -126,13 +126,13 @@ export default function Events() {
           ) : pastEvents.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {pastEvents.map(event => (
-                <Card key={event.id} className="overflow-hidden flex flex-col h-full" data-testid={`event-past-${event.id}`}>
+                <Card key={event.id} className="overflow-hidden flex flex-col" data-testid={`event-past-${event.id}`}>
                   {event.flyerUrl && (
-                    <div className="h-48 overflow-hidden relative">
+                    <div className="overflow-hidden">
                       <img
                         src={event.flyerUrl}
                         alt={event.title}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                        className="w-full h-48 object-cover transition-transform hover:scale-105 duration-300"
                       />
                     </div>
                   )}
