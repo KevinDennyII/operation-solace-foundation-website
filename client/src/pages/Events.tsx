@@ -66,15 +66,15 @@ export default function Events() {
                   data-testid={`event-upcoming-${event.id}`}
                   className="w-full max-w-4xl mx-auto flex flex-col md:flex-row bg-card rounded-xl overflow-hidden shadow-lg border border-border"
                 >
-                  <div className="w-full md:w-1/2 flex-shrink-0">
+                  <div className="w-full md:w-1/2 flex-shrink-0 bg-muted/40 flex items-center justify-center min-h-[280px]">
                     {event.flyerUrl ? (
                       <img
                         src={event.flyerUrl}
                         alt={event.title}
-                        className="w-full h-64 md:h-full object-cover"
+                        className="w-full h-full object-contain max-h-[480px]"
                       />
                     ) : (
-                      <div className="w-full h-64 md:h-full bg-muted flex items-center justify-center">
+                      <div className="w-full h-64 flex items-center justify-center">
                         <Calendar className="w-12 h-12 text-muted-foreground/40" />
                       </div>
                     )}
@@ -128,11 +128,11 @@ export default function Events() {
               {pastEvents.map(event => (
                 <Card key={event.id} className="overflow-hidden flex flex-col" data-testid={`event-past-${event.id}`}>
                   {event.flyerUrl && (
-                    <div className="overflow-hidden">
+                    <div className="bg-muted/40 flex items-center justify-center overflow-hidden">
                       <img
                         src={event.flyerUrl}
                         alt={event.title}
-                        className="w-full h-48 object-cover transition-transform hover:scale-105 duration-300"
+                        className="w-full max-h-56 object-contain"
                       />
                     </div>
                   )}

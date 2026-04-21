@@ -493,11 +493,11 @@ export default function AdminEvents() {
                       >
                         <div className="flex">
                           {event.flyerUrl && (
-                            <div className="w-20 flex-shrink-0 relative bg-muted">
+                            <div className="w-20 flex-shrink-0 bg-muted/50 flex items-center justify-center overflow-hidden">
                               <img
                                 src={event.flyerUrl}
                                 alt={event.title}
-                                className="absolute inset-0 w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                               />
                             </div>
                           )}
