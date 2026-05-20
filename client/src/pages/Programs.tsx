@@ -45,7 +45,7 @@ const PROGRAMS: ProgramData[] = [
       { text: "Integration support before and after", icon: Shield, iconColorClass: "text-primary/80" },
     ],
     image: {
-      src: "/images/IMG_2514.jpg",
+      src: "/images/IMG_2514.webp",
       alt: "Peaceful meditation and healing retreat",
       testId: "img-therapy",
     },
@@ -67,7 +67,7 @@ const PROGRAMS: ProgramData[] = [
       { text: "Advocacy for veteran access to alternative treatments", icon: Brain, iconColorClass: "text-accent/80" },
     ],
     image: {
-      src: "/images/IMG_9923.jpg",
+      src: "/images/IMG_9923.webp",
       alt: "Education and awareness",
       testId: "img-education",
     },
@@ -89,7 +89,7 @@ const PROGRAMS: ProgramData[] = [
       { text: "Rebuilding the brotherhood lost after service", icon: Users, iconColorClass: "text-secondary-foreground/80" },
     ],
     image: {
-      src: "/images/IMG_9903.jpg",
+      src: "/images/IMG_9903.webp",
       alt: "Veterans community gathering",
       testId: "img-community",
     },
@@ -128,6 +128,8 @@ function ProgramImage({ program }: { program: ProgramData }) {
         src={program.image.src} 
         alt={program.image.alt} 
         className="w-full h-[350px] object-cover"
+        loading="lazy"
+        decoding="async"
         data-testid={program.image.testId}
       />
     </div>

@@ -52,9 +52,11 @@ export default function OurApproach() {
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                 <img 
-                  src="/images/IMG_2470.jpg" 
+                  src="/images/IMG_2470.webp" 
                   alt="Veteran support community" 
                   className="w-full h-[400px] object-cover"
+                  loading="lazy"
+                  decoding="async"
                   data-testid="img-community"
                 />
               </div>

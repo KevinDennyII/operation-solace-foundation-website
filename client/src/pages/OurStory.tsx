@@ -105,9 +105,11 @@ export default function OurStory() {
             <div className="order-2 lg:order-1">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-background">
                 <img 
-                  src="/images/IMG_6763.jpg" 
+                  src="/images/IMG_6763.webp" 
                   alt="Veterans community gathering" 
                   className="w-full h-[400px] object-cover"
+                  loading="lazy"
+                  decoding="async"
                   data-testid="img-community"
                 />
               </div>

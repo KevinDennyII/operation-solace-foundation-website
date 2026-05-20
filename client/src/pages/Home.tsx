@@ -79,9 +79,11 @@ export default function Home() {
         {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0">
            <img 
-             src="/images/Untitled2.jpg" 
+             src="/images/Untitled2.webp" 
              alt="Veterans supporting veterans" 
              className="w-full h-full object-cover opacity-30"
+              loading="lazy"
+              decoding="async"
            />
           <div className="absolute inset-0 bg-primary/90 mix-blend-multiply" />
         </div>
@@ -158,9 +160,11 @@ export default function Home() {
             <div>
               <div className="rounded-2xl overflow-hidden shadow-2xl">
                 <img 
-                  src="/images/IMG_0911.jpg" 
+                  src="/images/IMG_0911.webp" 
                   alt="Veterans community support" 
                   className="w-full h-[400px] object-cover"
+                  loading="lazy"
+                  decoding="async"
                   data-testid="img-community"
                 />
               </div>
